@@ -1,0 +1,36 @@
+services:
+  apache:
+    build:
+      context: ./apache
+      dockerfile: Dockerfile
+    image: apache-proxy
+    container_name: jdeko-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      apinet:
+        ipv4_address: 10.0.0.213
+    restart: unless-stopped
+
+  api:
+    build:
+      context: /home/jdeto/go/github.com/jdetok/web
+      dockerfile: Dockerfile
+    image: go-api
+    container_name: jdeko-api
+    ports:
+      - "8080:8080"
+    networks:
+      apinet:
+        ipv4_address: 10.0.0.10
+    restart: unless-stopped
+
+networks:
+  apinet:
+    name: jdekome-net
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.0.0/24
+          gateway: 10.0.0.1
