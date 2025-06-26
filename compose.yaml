@@ -24,6 +24,15 @@ services:
     networks:
       apinet:
         ipv4_address: 10.0.0.10
+      dbnet:
+        ipv4_address: 10.0.13.152
+    volumes:
+      - /home/jdeto/go/github.com/jdetok/web:/app
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      # - /home/jdeto/go/github.com/jdetok/web/api:/app/api:ro
+      # - /home/jdeto/go/github.com/jdetok/web/internal:/app/internal:ro
+      # - /home/jdeto/go/github.com/jdetok/web/www:/app/www:ro
     restart: unless-stopped
 
 networks:
@@ -34,3 +43,6 @@ networks:
       config:
         - subnet: 10.0.0.0/24
           gateway: 10.0.0.1
+
+  dbnet:
+    external: true
