@@ -15,7 +15,7 @@ services:
 
   api:
     build:
-      context: /home/jdeto/go/github.com/jdetok/web
+      context: /home/jdeto/go/github.com/jdetok/go-api-jdeko.me
       dockerfile: Dockerfile
     image: go-api
     container_name: jdeko-api
@@ -27,12 +27,10 @@ services:
       dbnet:
         ipv4_address: 10.0.13.152
     volumes:
-      - /home/jdeto/go/github.com/jdetok/web:/app
+      - /home/jdeto/dkr/jdeko.me/log:/app/log
+      - /home/jdeto/go/github.com/jdetok/go-api-jdeko.me:/app
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
-      # - /home/jdeto/go/github.com/jdetok/web/api:/app/api:ro
-      # - /home/jdeto/go/github.com/jdetok/web/internal:/app/internal:ro
-      # - /home/jdeto/go/github.com/jdetok/web/www:/app/www:ro
     restart: unless-stopped
 
 networks:

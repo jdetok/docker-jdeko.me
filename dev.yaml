@@ -1,0 +1,43 @@
+# docker compose file to run api on localhost:8080
+services:
+  dev-apache:
+    build:
+      context: ./apache
+      dockerfile: dev.Dockerfile
+    image: dev-apache-proxy
+    container_name: dev-jdeko-proxy
+    ports:
+      - "8888:80"
+    networks:
+      devapinet:
+        ipv4_address: 10.0.19.213
+    restart: unless-stopped
+
+  dev-api:
+    build:
+      context: /home/jdeto/go/github.com/jdetok/dev-jdeko.me
+      dockerfile: Dockerfile
+    image: dev-go-api
+    container_name: dev-jdeko-api
+    networks:
+      devapinet:
+        ipv4_address: 10.0.19.10
+      devpgnet:
+        ipv4_address: 10.0.29.199
+    volumes:
+      - /home/jdeto/dkr/jdeko.me/devlog:/app/log
+      - /home/jdeto/go/github.com/jdetok/dev-jdeko.me:/app
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    restart: unless-stopped
+
+networks:
+  devapinet:
+    name: dev-jdekome-net
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.19.0/24
+          gateway: 10.0.19.1
+  devpgnet:
+    external: true
